@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_app/models/item.dart';
 
 void main() => runApp(MyApp());
@@ -29,15 +32,13 @@ class MyApp extends StatelessWidget {
 
 class HomePage extends StatefulWidget {
   var items = List<Item>();
+
   HomePage() {
-    items = [];
     items.add(Item(title: "Item 1", done: false));
     items.add(Item(title: "Item 2", done: false));
     items.add(Item(title: "Item 3", done: false));
     items.add(Item(title: "Item 4", done: false));
     items.add(Item(title: "Item 5", done: false));
-    items.add(Item(title: "Item 6", done: false));
-    items.add(Item(title: "Item 7", done: false));
   }
   @override
   _HomePageState createState() => _HomePageState();
@@ -56,12 +57,13 @@ class _HomePageState extends State<HomePage> {
         ),
       );
     });
+
     newTaskCtrl.clear();
   }
 
-  void remove(int index) {
+  void remove(Item item) {
     setState(() {
-      print(widget.items[index]);
+      widget.items.remove(item);
     });
   }
 
@@ -69,12 +71,13 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.indigoAccent,
         title: TextFormField(
           controller: newTaskCtrl,
           keyboardType: TextInputType.text,
           style: TextStyle(
             color: Colors.white,
-            fontSize: 14,
+            fontSize: 16,
           ),
           decoration: InputDecoration(
             labelText: "Novo Item",
@@ -82,41 +85,44 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      body: ListView.builder(
-        itemCount: widget.items.length,
-        itemBuilder: (BuildContext context, int index) {
-          final item = widget.items[index];
-          return Dismissible(
-            child: CheckboxListTile(
-              title: Text(item.title),
-              value: item.done,
-              onChanged: (value) {
-                setState(() {
-                  item.done = value;
-                });
+      body: Center(
+        child: ListView.builder(
+          itemCount: widget.items.length,
+          itemBuilder: (BuildContext context, int index) {
+            var item = widget.items[index];
+            return Dismissible(
+              child: CheckboxListTile(
+                activeColor: Colors.indigoAccent,
+                title: new Text(item.title.toUpperCase(),
+                    style: new TextStyle(
+                      color: item.done
+                          ? Colors.indigo.withOpacity(0.5)
+                          : Colors.black,
+                    )),
+                value: item.done,
+                onChanged: (value) {
+                  setState(() {
+                    item.done = value;
+                  });
+                },
+              ),
+              key: Key(item.title),
+              background: Container(
+                color: Colors.blueGrey.withOpacity(0.1),
+              ),
+              onDismissed: (direction) {
+                remove(item);
               },
-            ),
-            key: Key(item.title),
-            background: Container(
-              color: Colors.red.withOpacity(0.2),
-            ),
-            onDismissed: (direction) {
-              if (direction == DismissDirection.endToStart) print(direction);
-              if (direction == DismissDirection.startToEnd) print(direction);
-              setState(() {
-                print(index);
-                widget.items.removeAt(index);
-              });
-            },
-          );
-        },
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          add;
+          add();
         },
         child: Icon(Icons.add_box),
-        backgroundColor: Colors.pink,
+        backgroundColor: Colors.indigo.withOpacity(0.9),
       ),
     );
   }
