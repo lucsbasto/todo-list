@@ -33,13 +33,7 @@ class MyApp extends StatelessWidget {
 class HomePage extends StatefulWidget {
   var items = List<Item>();
 
-  HomePage() {
-    items.add(Item(title: "Item 1", done: false));
-    items.add(Item(title: "Item 2", done: false));
-    items.add(Item(title: "Item 3", done: false));
-    items.add(Item(title: "Item 4", done: false));
-    items.add(Item(title: "Item 5", done: false));
-  }
+  HomePage() {}
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -93,12 +87,16 @@ class _HomePageState extends State<HomePage> {
             return Dismissible(
               child: CheckboxListTile(
                 activeColor: Colors.indigoAccent,
-                title: new Text(item.title.toUpperCase(),
-                    style: new TextStyle(
+                title: new Text(
+                  item.title.toUpperCase(),
+                  style: new TextStyle(
                       color: item.done
                           ? Colors.indigo.withOpacity(0.5)
                           : Colors.black,
-                    )),
+                      decoration: item.done
+                          ? TextDecoration.lineThrough
+                          : TextDecoration.none),
+                ),
                 value: item.done,
                 onChanged: (value) {
                   setState(() {
