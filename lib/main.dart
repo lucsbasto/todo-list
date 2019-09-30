@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Toper',
+      title: 'TODO-LIST ToPeRsOn',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // This is the theme of your application.
@@ -46,7 +46,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var newTaskCtrl = TextEditingController();
-
   void add() {
     if (newTaskCtrl.text.isEmpty) return;
     setState(() {
@@ -73,6 +72,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Colors.indigoAccent,
         title: TextFormField(
+          focusNode: FocusNode(),
           controller: newTaskCtrl,
           keyboardType: TextInputType.text,
           style: TextStyle(
