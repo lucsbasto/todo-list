@@ -75,7 +75,8 @@ class _HomePageState extends State<HomePage> {
           ),
           decoration: InputDecoration(
             labelText: "Novo Item",
-            labelStyle: TextStyle(color: Colors.white),
+            labelStyle:
+                TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ),
       ),
@@ -91,11 +92,12 @@ class _HomePageState extends State<HomePage> {
                   item.title.toUpperCase(),
                   style: new TextStyle(
                       color: item.done
-                          ? Colors.indigo.withOpacity(0.5)
-                          : Colors.black,
+                          ? Colors.indigo.withOpacity(0.2)
+                          : Colors.black.withOpacity(0.9),
                       decoration: item.done
                           ? TextDecoration.lineThrough
-                          : TextDecoration.none),
+                          : TextDecoration.none,
+                      fontWeight: FontWeight.bold),
                 ),
                 value: item.done,
                 onChanged: (value) {
